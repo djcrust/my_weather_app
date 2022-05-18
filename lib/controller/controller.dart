@@ -1,19 +1,19 @@
 import 'package:get/get.dart';
 import 'package:my_weather_app/models/city.dart';
-import 'package:my_weather_app/services/repository.dart';
 
 class HomeController extends GetxController {
-  CityRepository cityRepository;
-  HomeController({
-    required this.cityRepository,
-  });
-
   final cities = <City>[].obs;
+  final nSelected = 0.obs;
+  //final cities = RxList<City>([]);
 
   @override
   void onInit() {
     super.onInit();
-    cities.assignAll(cityRepository.readCities());
+    readCities();
+  }
+
+  void readCities() {
+    cities.assignAll(City.citiesList);
   }
 
   @override
@@ -28,5 +28,12 @@ class HomeController extends GetxController {
 
   void setSelectedCity(int index) {
     cities[index].isSelected = !cities[index].isSelected;
+    List<City> selectedCities = getSelectedCities();
+    updateSelect(selectedCities.length);
+    cities.refresh();
+  }
+
+  void updateSelect(int valueSelected) {
+    nSelected.value = valueSelected;
   }
 }

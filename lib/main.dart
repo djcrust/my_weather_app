@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'My Weather App',
       debugShowCheckedModeBanner: false,
-      home: GetStarted(),
+      home: const GetStarted(),
       initialBinding: HomeBinding(),
       builder: EasyLoading.init(),
     );

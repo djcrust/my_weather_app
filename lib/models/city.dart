@@ -14,10 +14,11 @@ class City {
   //List of Cities
   static List<City> citiesList = [
     City(
-        isSelected: false,
-        city: 'London',
-        country: 'United Kindgom',
-        isDefault: true),
+      isSelected: false,
+      city: 'London',
+      country: 'United Kindgom',
+      isDefault: true,
+    ),
     City(
       isSelected: false,
       city: 'Tokyo',
@@ -28,6 +29,12 @@ class City {
       isSelected: false,
       city: 'Delhi',
       country: 'India',
+      isDefault: false,
+    ),
+    City(
+      isSelected: false,
+      city: 'Antananarivo',
+      country: 'Madagascar',
       isDefault: false,
     ),
     City(
