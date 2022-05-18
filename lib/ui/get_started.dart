@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_weather_app/controller/controller.dart';
 import 'package:my_weather_app/models/constants.dart';
 import 'package:my_weather_app/ui/welcome.dart';
 
 class GetStarted extends StatelessWidget {
-  const GetStarted({Key? key}) : super(key: key);
+  final homeCtrl = Get.find<HomeController>();
+  GetStarted({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
