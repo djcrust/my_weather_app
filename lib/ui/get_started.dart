@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_weather_app/models/constants.dart';
+import 'package:my_weather_app/ui/welcome.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({Key? key}) : super(key: key);
@@ -23,7 +25,9 @@ class GetStarted extends StatelessWidget {
                 height: 30,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => const Welcome());
+                },
                 child: Container(
                   height: 50,
                   width: size.width * 0.7,
