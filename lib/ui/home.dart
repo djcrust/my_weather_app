@@ -9,14 +9,9 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Constants myConstants = Constants();
+    Constants myyConstants = Constants();
+    homeCtrl.fetchWeather(homeCtrl.cities[0].city);
 
-    int temperature = 0;
-    int maxTemp = 0;
-    String weatherStateName = 'Loading...';
-    int humidity = 0;
-    int windSpeed = 0;
-    var currentDate = 'Loading...';
     String imageUrl = '';
     int woied = 44418;
     String location = 'London';
@@ -28,7 +23,7 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: myConstants.secondaryColor,
+        backgroundColor: myyConstants.secondaryColor,
         title: Text('Home Page'),
       ),
     );

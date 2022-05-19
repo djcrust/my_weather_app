@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:my_weather_app/controller/controller.dart';
 import 'package:my_weather_app/models/constants.dart';
 import 'package:my_weather_app/ui/get_started.dart';
+import 'package:my_weather_app/ui/home.dart';
 
 class Welcome extends StatelessWidget {
   final homeCtrl = Get.find<HomeController>();
@@ -93,7 +94,9 @@ class Welcome extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: myConstants.secondaryColor,
           child: const Icon(Icons.pin_drop),
-          onPressed: () {},
+          onPressed: () {
+            Get.to(() => Home());
+          },
         ),
       ),
     );
