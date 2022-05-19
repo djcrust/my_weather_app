@@ -19,6 +19,7 @@ class HomeController extends GetxController {
   var weatherObject = <Weather>[];
   List<String> citiess = ['London'];
   RxString selLocation = 'London'.obs;
+  late Weather objTest1;
 
   @override
   void onInit() {
@@ -59,7 +60,8 @@ class HomeController extends GetxController {
     var searchResult = await RequestAssistant.getRequest(
         '${MyConstants.wUrl}${MyConstants.wToken}&q=$location&days=3');
     if (searchResult != null) {
-      final objTest1 = Weather.fromJson(searchResult);
+      var objWeather = Weather.fromJson(searchResult);
+      objTest1 = objWeather;
       //print(objTest1.current.tempC);
     }
   }

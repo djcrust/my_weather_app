@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
 import 'package:my_weather_app/controller/controller.dart';
 import 'package:my_weather_app/models/constants.dart';
 import 'package:my_weather_app/widgets/weather_item.dart';
@@ -231,7 +231,71 @@ class Home extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemBuilder: itemBuilder,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: homeCtrl.objTest1.forecast.forecastday.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String today = DateTime.now().toString().substring(0, 10);
+                    var selectedDay =
+                        homeCtrl.objTest1.forecast.forecastday[index].date;
+                    var parsedDate = DateTime.parse(selectedDay);
+                    var newDate =
+                        DateFormat('EEEE').format(parsedDate).substring(0, 3);
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      margin: const EdgeInsets.only(
+                        right: 20.0,
+                        bottom: 10.0,
+                        top: 10.0,
+                      ),
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: selectedDay == today
+                            ? myyConstants.primaryColor
+                            : Colors.white,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 1),
+                            blurRadius: 5,
+                            color: selectedDay == today
+                                ? myyConstants.primaryColor
+                                : Colors.black54.withOpacity(.2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${homeCtrl.objTest1.forecast.forecastday[index].day.avgtempC?.toInt()}C',
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              color: selectedDay == today
+                                  ? Colors.white
+                                  : myyConstants.primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Image.network(
+                            'http:${homeCtrl.objTest1.forecast.forecastday[index].day.condition.icon}',
+                            width: 40,
+                          ),
+                          Text(
+                            newDate,
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: selectedDay == today
+                                  ? Colors.white
+                                  : myyConstants.primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               )
             ],

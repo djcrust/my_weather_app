@@ -43,7 +43,7 @@ class weatherwidget extends StatelessWidget {
           height: 8.0,
         ),
         Text(
-          value + unit,
+          double.parse(value).round().toString() + unit,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
