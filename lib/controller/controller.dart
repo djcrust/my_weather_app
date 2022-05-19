@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_weather_app/models/city.dart';
+import 'package:my_weather_app/models/weather.dart';
 import 'package:my_weather_app/services/request_assistant.dart';
 import 'package:my_weather_app/constants/my_constants.dart';
 
@@ -13,7 +14,11 @@ class HomeController extends GetxController {
   late String windSpeed = '';
   String weatherStateName = 'Loading...';
   late String maxTemp = '';
-  String currentDate = 'Loading...';
+  RxString currentDate = 'Loading...'.obs;
+  late String imageUrl = '';
+  var weatherObject = <Weather>[];
+  List<String> citiess = ['London'];
+  RxString selLocation = 'London'.obs;
 
   @override
   void onInit() {
@@ -35,6 +40,10 @@ class HomeController extends GetxController {
     return cities.where((city) => city.isSelected == true).toList();
   }
 
+  void setLocationFn(String location) {
+    selLocation.value = location;
+  }
+
   void setSelectedCity(int index) {
     cities[index].isSelected = !cities[index].isSelected;
     List<City> selectedCities = getSelectedCities();
@@ -44,6 +53,22 @@ class HomeController extends GetxController {
 
   void updateSelect(int valueSelected) {
     nSelected.value = valueSelected;
+  }
+
+  void fetchWeatherForecast(String location) async {
+    var searchResult = await RequestAssistant.getRequest(
+        '${MyConstants.wUrl}${MyConstants.wToken}&q=$location&days=3');
+    if (searchResult != null) {
+      final objTest1 = Weather.fromJson(searchResult);
+      //print(objTest1.current.tempC);
+    }
+  }
+
+  void selectedCitiesList() {
+    List<City> selectedCities = getSelectedCities();
+    for (int i = 0; i < selectedCities.length; i++) {
+      citiess.add(selectedCities[i].city);
+    }
   }
 
   void fetchWeather(String location) async {
@@ -60,10 +85,8 @@ class HomeController extends GetxController {
     humidity = consolidatedWeather[0]['day']['avghumidity'].toString();
     windSpeed = consolidatedWeather[0]['day']['maxwind_kph'].toString();
     maxTemp = consolidatedWeather[0]['day']['maxtemp_c'].toString();
-
+    imageUrl = consolidatedWeather[0]['day']['condition']['icon'];
     var myDate = DateTime.parse(consolidatedWeather[0]['date']);
-    currentDate = DateFormat('EEEE, d MMMM').format(myDate);
-
-    print(currentDate);
+    currentDate.value = DateFormat('EEEE, d MMMM').format(myDate);
   }
 }
