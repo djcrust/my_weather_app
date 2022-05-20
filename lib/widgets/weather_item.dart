@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class weatherwidget extends StatelessWidget {
-  const weatherwidget({
+class Weatherwidget extends StatelessWidget {
+  const Weatherwidget({
     Key? key,
     required this.value,
     required this.text,

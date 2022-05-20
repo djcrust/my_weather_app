@@ -3,11 +3,17 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_weather_app/controller/controller.dart';
 import 'package:my_weather_app/models/constants.dart';
+import 'package:my_weather_app/ui/detail_page.dart';
 import 'package:my_weather_app/widgets/weather_item.dart';
 
 class Home extends StatelessWidget {
   final homeCtrl = Get.find<HomeController>();
   Home({Key? key}) : super(key: key);
+
+  //Create a shader linear gradient
+  final Shader linearGradient = const LinearGradient(
+    colors: <Color>[Color(0xffABCFF2), Color(0xff9AC6F3)],
+  ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +27,7 @@ class Home extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Obx(
       () => Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: false,
@@ -69,7 +76,7 @@ class Home extends StatelessWidget {
                         onChanged: (String? newValue) {
                           homeCtrl.setLocationFn(newValue!);
                           homeCtrl.fetchWeatherForecast(newValue);
-                          homeCtrl.fetchWeather(newValue);
+                          //homeCtrl.fetchWeather(newValue);
                         },
                       ),
                     ),
@@ -152,19 +159,19 @@ class Home extends StatelessWidget {
                               double.parse(homeCtrl.temperature)
                                   .round()
                                   .toString(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 80.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey,
+                                foreground: Paint()..shader = linearGradient,
                               ),
                             ),
                           ),
-                          const Text(
+                          Text(
                             'o',
                             style: TextStyle(
                               fontSize: 30.0,
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                              foreground: Paint()..shader = linearGradient,
                             ),
                           ),
                         ],
@@ -181,19 +188,19 @@ class Home extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    weatherwidget(
+                    Weatherwidget(
                       value: homeCtrl.windSpeed,
                       text: 'Wind Speed',
                       unit: 'km/h',
                       imageUrl: 'assets/windspeed.png',
                     ),
-                    weatherwidget(
+                    Weatherwidget(
                       value: homeCtrl.humidity,
                       text: 'Humidity',
                       unit: '',
                       imageUrl: 'assets/humidity.png',
                     ),
-                    weatherwidget(
+                    Weatherwidget(
                       value: homeCtrl.maxTemp,
                       text: 'Max Temp',
                       unit: 'C',
@@ -240,59 +247,65 @@ class Home extends StatelessWidget {
                     var parsedDate = DateTime.parse(selectedDay);
                     var newDate =
                         DateFormat('EEEE').format(parsedDate).substring(0, 3);
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      margin: const EdgeInsets.only(
-                        right: 20.0,
-                        bottom: 10.0,
-                        top: 10.0,
-                      ),
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: selectedDay == today
-                            ? myyConstants.primaryColor
-                            : Colors.white,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
+                    return GestureDetector(
+                      onTap: () {
+                        homeCtrl.setIndexWeather(index);
+                        Get.to(() => DetailPage());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        margin: const EdgeInsets.only(
+                          right: 20.0,
+                          bottom: 10.0,
+                          top: 10.0,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(0, 1),
-                            blurRadius: 5,
-                            color: selectedDay == today
-                                ? myyConstants.primaryColor
-                                : Colors.black54.withOpacity(.2),
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: selectedDay == today
+                              ? myyConstants.primaryColor
+                              : Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${homeCtrl.objTest1.forecast.forecastday[index].day.avgtempC?.toInt()}C',
-                            style: TextStyle(
-                              fontSize: 17.0,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(0, 1),
+                              blurRadius: 5,
                               color: selectedDay == today
-                                  ? Colors.white
-                                  : myyConstants.primaryColor,
-                              fontWeight: FontWeight.w500,
+                                  ? myyConstants.primaryColor
+                                  : Colors.black54.withOpacity(.2),
                             ),
-                          ),
-                          Image.network(
-                            'http:${homeCtrl.objTest1.forecast.forecastday[index].day.condition.icon}',
-                            width: 40,
-                          ),
-                          Text(
-                            newDate,
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: selectedDay == today
-                                  ? Colors.white
-                                  : myyConstants.primaryColor,
-                              fontWeight: FontWeight.w500,
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${homeCtrl.objTest1.forecast.forecastday[index].day.avgtempC?.toInt()}C',
+                              style: TextStyle(
+                                fontSize: 17.0,
+                                color: selectedDay == today
+                                    ? Colors.white
+                                    : myyConstants.primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
+                            Image.network(
+                              'http:${homeCtrl.objTest1.forecast.forecastday[index].day.condition.icon}',
+                              width: 40,
+                            ),
+                            Text(
+                              newDate,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: selectedDay == today
+                                    ? Colors.white
+                                    : myyConstants.primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

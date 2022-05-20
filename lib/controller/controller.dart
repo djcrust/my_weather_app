@@ -20,6 +20,7 @@ class HomeController extends GetxController {
   List<String> citiess = ['London'];
   RxString selLocation = 'London'.obs;
   late Weather objTest1;
+  int indexWeather = 0;
 
   @override
   void onInit() {
@@ -43,6 +44,10 @@ class HomeController extends GetxController {
 
   void setLocationFn(String location) {
     selLocation.value = location;
+  }
+
+  void setIndexWeather(int value) {
+    indexWeather = value;
   }
 
   void setSelectedCity(int index) {

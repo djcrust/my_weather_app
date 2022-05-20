@@ -13,6 +13,7 @@ class Welcome extends StatelessWidget {
   Widget build(BuildContext context) {
     Constants myConstants = Constants();
     Size size = MediaQuery.of(context).size;
+    homeCtrl.getSelectedCities();
 
     return Obx(
       () => Scaffold(
